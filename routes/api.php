@@ -1,9 +1,11 @@
 <?php
 
+// use App\Http\Controllers\Api\V1\ArmestController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\ProductController;
+use App\Http\Controllers\Api\V1\InventoryController;
 
 /*
 |--------------------------------------------------------------------------
@@ -17,21 +19,20 @@ use App\Http\Controllers\ProductController;
 */
 
 // Public routes
-Route::post('register', [AuthController::class, 'register']);
-Route::post('login', [AuthController::class, 'login']);
+Route::group(['prefix' => 'v1', 'namespace' => 'App\Http\Controllers\Api\V1'], function () {
+    Route::post('register', [AuthController::class, 'register']);
+    Route::post('login', [AuthController::class, 'login']);
 
-Route::get('products', [ProductController::class, 'index']);
-Route::get('products/{id}', [ProductController::class, 'show']);
-Route::get('products/search/{name}', [ProductController::class, 'search']);
-// Route::apiResource('products', ProductController::class);
+    Route::apiResource('documents', DocumentController::class);
+
+    Route::get('inventories/qrcodeJson/{id}', [InventoryController::class, 'qrcodeJson'])->name('inventories.qrcodeJson');
+});
+
+
 
 
 // Protected routes
 Route::group(['middleware' => ['auth:sanctum']], function () {
-    Route::post('products', [ProductController::class, 'store']);
-    Route::put('products/{id}', [ProductController::class, 'update']);
-    Route::delete('products/{id}', [ProductController::class, 'destroy']);
-
     Route::post('logout', [AuthController::class, 'logout']);
 });
 
