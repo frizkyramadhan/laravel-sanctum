@@ -24,10 +24,9 @@ Route::group(['prefix' => 'v1', 'namespace' => 'App\Http\Controllers\Api\V1'], f
     Route::post('login', [AuthController::class, 'login']);
 
     Route::apiResource('documents', DocumentController::class);
-
-    Route::get('inventories/qrcodeJson/{id}', [InventoryController::class, 'qrcodeJson'])->name('inventories.qrcodeJson');
 });
 
+Route::get('inventories/qrcode/{id}', [InventoryController::class, 'qrcode'])->name('inventories.qrcode');
 
 
 
